@@ -1,86 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import React from "react";
 
 const LogIn = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
-
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const router = useRouter();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost:4000/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        mode: 'cors',
-        credentials: 'include',
-        body: JSON.stringify({
-          username: formData.username,
-          password: formData.password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || `HTTP error! status: ${response.status}`);
-      }
-
-      // Store user data in localStorage
-      localStorage.setItem('user', JSON.stringify(data));
-      
-      // Redirect based on user role
-      switch (data.role) {
-        case 'Client':
-          router.push('/clientHomepage');
-          break;
-        case 'Agent':
-          router.push('/agentHomepage');
-          break;
-        case 'Writer':
-          router.push('/writerHomepage');
-          break;
-        default:
-          router.push('/');
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-      setError(
-        err.message || 
-        "Invalid username or password. Please try again."
-      );
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-white relative">
-      <div className="absolute rounded-lg mt-10 right-10">
-        <Link href="/">
-          <button className="bg-[#FFC840] text-black py-3 px-10 rounded-lg text-sm font-bold shadow-none hover:shadow-inner transition-shadow duration-300">
-            Back
-          </button>
-        </Link>
-      </div>
+     <div className="absolute rounded-lg mt-10 right-10">
+              <Link href="/">
+                <button className="bg-[#FFC840] text-black py-3 px-10 rounded-lg text-sm font-bold shadow-none hover:shadow-inner transition-shadow duration-300">
+                  Back
+                </button>
+              </Link>
+            </div>
 
       {/* Main Container */}
       <div className="flex-grow w-full max-w-[1200px] flex items-center justify-between mx-auto">
@@ -101,31 +33,17 @@ const LogIn = () => {
             <p className="text-white text-left text-lg mb-6 font-montserrat">
               — where your coverage stays Light and Easy.
             </p>
-            <form onSubmit={handleSubmit} className="flex flex-col font-montserrat">
+            <form className="flex flex-col font-montserrat">
               <input
                 type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
                 placeholder="Username"
                 className="input bg-white border border-gray-300 rounded-lg px-3 py-2 text-black mb-4"
               />
               <input
                 type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
                 placeholder="Password"
                 className="input bg-white border border-gray-300 rounded-lg px-3 py-2 text-black mb-2"
               />
-
-              {/* Error and Success Messages */}
-              {error && (
-                <p className="text-red-500 text-center mt-2">{error}</p>
-              )}
-              {successMessage && (
-                <p className="text-green-500 text-center mt-2">{successMessage}</p>
-              )}
 
               {/* Checkbox + Forgot Password Section */}
               <div className="flex items-center justify-between text-white text-sm mb-4">
@@ -135,23 +53,23 @@ const LogIn = () => {
                 </div>
                 <div>
                   Forgot Password?{" "}
-                  <Link href="/forgotPassword" className="text-yellow-300 font-bold">
+                  <a href="#" className="text-yellow-300 font-bold">
                     Reset here
-                  </Link>
+                  </a>
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="mt-4 w-full bg-[#FFC840] text-black font-bold py-2 rounded-lg shadow-md hover:bg-[#FFD460] transition-colors"
+                className="mt-15 w-full bg-[#FFC840] text-black font-bold py-2 rounded-lg shadow-md"
               >
                 Log-In
               </button>
               <p className="text-center text-sm text-white mt-2">
                 Don't have an account yet?{" "}
-                <Link href="/SignUp" className="text-yellow-300">
+                <a href="/signUp" className="text-yellow-300">
                   Sign up here
-                </Link>
+                </a>
               </p>
             </form>
           </div>
@@ -164,7 +82,7 @@ const LogIn = () => {
           <div className="flex flex-col items-start">
             <div className="flex space-x-2">
               <p className="font-montserrat text-xs">
-                Copyright 2025 Lumina Insurances. All rights reserved.
+                Copyright © 2025 Lumina Insurances. All rights reserved.
               </p>
             </div>
           </div>

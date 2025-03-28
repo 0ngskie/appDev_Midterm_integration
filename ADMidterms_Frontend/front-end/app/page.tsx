@@ -30,7 +30,7 @@ const Page: React.FC = () => {
             <button className="bg-[#FFC840] text-black py-1 px-2 rounded-lg text-[12px] font-montserrat font-bold">Claim and Services</button>
             <button className="bg-[#FFC840] text-black py-1 px-2 rounded-lg text-[12px] font-montserrat font-bold">Talk with an Advisor</button>
             <button className="bg-[#FFC840] text-black py-1 px-2 rounded-lg text-[12px] font-montserrat font-bold flex items-center space-x-2">
-              <span><Link href="/SignUp">REGISTER</Link></span>
+              <span><Link href="/signUp">REGISTER</Link></span>
               <div className="relative">
                 <button onClick={toggleDropdown} className="bg-white text-black py-1 px-2 rounded-full text-[12px] font-montserrat font-bold flex items-center space-x-1">
                   <span>Log-in</span>
@@ -70,7 +70,7 @@ const Page: React.FC = () => {
               <p>✔️ Manage your policies in one place</p>
               <p>✔️ Access quick support and updates</p>
               <p className="mt-4">Let’s light the way to your secure future.</p>
-              <button className="bg-[#FFC840] text-black py-2 px-8 rounded-lg text-[12px] font-montserrat font-bold mt-4">              <span><Link href="/SignUp">REGISTER</Link></span></button>
+              <button className="bg-[#FFC840] text-black py-2 px-8 rounded-lg text-[12px] font-montserrat font-bold mt-4">              <span><Link href="/signUp">REGISTER</Link></span></button>
             </div>
           </div>
           <div className="absolute bottom-13 right-170 bg-white rounded-lg w-40 h-40 shadow-lg border-2 border-black" style={{ transform: 'translate(50%, 50%)' }}>

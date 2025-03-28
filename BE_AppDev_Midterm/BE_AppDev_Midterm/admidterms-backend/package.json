@@ -13,6 +13,10 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mysql": "^2.18.1",
+<<<<<<< HEAD:admidterms-backend/package.json
+    "patternpalapi": "file:"
+=======
     "nodemon": "^3.1.9"
+>>>>>>> dev/Miggy:BE_AppDev_Midterm/admidterms-backend/package.json
   }
 }
