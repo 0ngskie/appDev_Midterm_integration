@@ -47,21 +47,21 @@ const PolicyCertificate: React.FC = () => {
                         <div className="space-y-4">
                             <div className="border rounded p-2">
                                 <label className="text-sm">Insured Name</label><br />
-                                <span className="font-bold"></span>
+                                <input type="text" className="font-bold border-b border-black w-full outline-none" />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="border rounded p-2">
                                     <label className="text-sm">Issue Age</label><br />
-                                    <span className="font-bold"></span>
+                                    <input type="text" className="font-bold border-b border-black w-full outline-none" />
                                 </div>
                                 <div className="border rounded p-2">
                                     <label className="text-sm">Sex</label><br />
-                                    <span className="font-bold"></span>
+                                    <input type="text" className="font-bold border-b border-black w-full outline-none" />
                                 </div>
                             </div>
                             <div className="border rounded p-2">
                                 <label className="text-sm">Relationship to the Owner</label><br />
-                                <span className="font-bold"></span>
+                                <input type="text" className="font-bold border-b border-black w-full outline-none" />
                             </div>
                         </div>
                     </div>
@@ -266,19 +266,6 @@ const PolicyCertificate: React.FC = () => {
                     <div className="border p-2 rounded">
                         <p><strong>Relationship to the Insured</strong><br /> </p>
                     </div>
-                    <div className="border p-2 rounded">
-                        <p><strong>Name</strong><br />   </p>
-                    </div>
-                    <div className="border p-2 rounded">
-                        <p><strong>Birthdate</strong><br /> </p>
-                    </div>
-                    <div className="border p-2 rounded">
-                        <p><strong>Sex</strong><br /> </p>
-                    </div>
-                    <div className="border p-2 rounded">
-                        <p><strong>Relationship to the Insured</strong><br /> </p>
-                    </div>
-
                     <div className="border p-2 rounded">
                         <p><strong>Name</strong><br />   </p>
                     </div>
