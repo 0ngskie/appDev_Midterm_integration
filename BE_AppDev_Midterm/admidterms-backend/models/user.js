@@ -1,13 +1,13 @@
 // Honestly don't know what to do with this
-class User {
+class User{
     constructor(
         user_id,
-        firstName,
-        lastName,
-        dateOfBirth,
+        first_name,
+        last_name,
+        date_of_birth,
         age,
         nationality,
-        phonenumber,
+        contact_number,
         email,
         address,
         province,
@@ -16,15 +16,16 @@ class User {
         country,
         username,
         password,
-        role
+        role,
+        agent_id
     ) {
         this.user_id = user_id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.date_of_birth = date_of_birth;
         this.age = age;
         this.nationality = nationality;
-        this.phonenumber = phonenumber;
+        this.contact_number = contact_number;
         this.email = email;
         this.address = address;
         this.province = province;
@@ -34,6 +35,7 @@ class User {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.agent_id = agent_id;
     }
 }
 
