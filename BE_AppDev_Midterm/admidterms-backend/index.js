@@ -14,11 +14,13 @@ app.use(express.json());
 
 // Routes
 const userRoute = require('./routes/userRoute');
+const policyRoute = require('./routes/policyRoute');
 const plansRoute = require('./routes/plansRoute');
 const claimRoute = require('./routes/claimsRoute');
 const paymentRoute = require('./routes/paymentRoute');
 //Address
 app.use('/users', userRoute);
+app.use('/policy', policyRoute);
 app.use('/plans', plansRoute);
 app.use('/claims', claimRoute);
 app.use('/payments', paymentRoute);
