@@ -6,18 +6,18 @@ export default function ReviewPolicyClaims() {
   const router = useRouter(); // Initialize the router
 
   const policyData = [
-    { type: "Retirement (Premium)", date: "February 2, 2025", status: "Pending Review" },
-    { type: "Education (Basic)", date: "February 2, 2025", status: "Pending Review" },
-    { type: "Health (Premium)", date: "February 2, 2025", status: "Pending Review" },
-    { type: "Auto (Standard)", date: "February 2, 2025", status: "Pending Review" },
-    { type: "Auto (Premium)", date: "February 2, 2025", status: "Pending Review" },
+    { type: "Retirement (Premium)", date: "February 2, 2025" },
+    { type: "Education (Basic)", date: "February 2, 2025" },
+    { type: "Health (Premium)", date: "February 2, 2025" },
+    { type: "Auto (Standard)", date: "February 2, 2025" },
+    { type: "Auto (Premium)", date: "February 2, 2025" },
     // Additional data
-    { type: "Travel (Basic)", date: "March 5, 2025", status: "Pending Review" },
-    { type: "Travel (Premium)", date: "March 5, 2025", status: "Pending Review" },
-    { type: "Home (Standard)", date: "March 10, 2025", status: "Pending Review" },
-    { type: "Home (Premium)", date: "March 10, 2025", status: "Pending Review" },
-    { type: "Life (Basic)", date: "March 15, 2025", status: "Pending Review" },
-    { type: "Life (Premium)", date: "March 15, 2025", status: "Pending Review" },
+    { type: "Travel (Basic)", date: "March 5, 2025" },
+    { type: "Travel (Premium)", date: "March 5, 2025" },
+    { type: "Home (Standard)", date: "March 10, 2025" },
+    { type: "Home (Premium)", date: "March 10, 2025" },
+    { type: "Life (Basic)", date: "March 15, 2025" },
+    { type: "Life (Premium)", date: "March 15, 2025" },
   ];
 
   return (
@@ -69,25 +69,24 @@ export default function ReviewPolicyClaims() {
       </header>
       <main className="mt-30 flex-grow container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold text-center mb-6">Review Policy Requests</h1>
-        <div className="border border-[#FFC840] rounded-lg p-6 max-w-4xl mx-auto mb-6">
+
+        <div className="border-2 border-[#FFC840] rounded-lg p-6 max-w-2xl mx-auto mb-6 bg-white">
           {policyData.map((policy, index) => (
-            <div key={index} className="flex items-center mb-4 gap-4">
-              {/* Redirect to writerReviewApplicationForm when "Review" is clicked */}
+            <div key={index} className="flex items-center mb-4">
               <button
-                className="bg-[#FFC840] px-4 py-1 rounded-full text-black font-medium min-w-[80px] text-center"
-                onClick={() => router.push('/writerReviewApplicationForm')}
+                className="bg-[#FFC840] px-4 py-2 rounded-full text-black font-medium min-w-[100px] text-center mr-4"
+                onClick={() => router.push("/writerReviewClaim")}
               >
                 Review
               </button>
-              <div className="flex-grow">
-                <span className="font-medium">{policy.type}</span>
-                <span className="mx-2">•</span>
-                <span className="text-sm">Date: {policy.date}</span>
-              </div>
-              <div className="text-sm">Status: {policy.status}</div>
-            </div>
-          ))}
+          <div>
+            <span className="font-medium">{policy.type}</span>
+              <span className="mx-2">•</span>
+              <span className="text-sm">Date: {policy.date}</span>
+          </div>
         </div>
+      ))}
+    </div>
 
         <div className="flex justify-center">
           <button className="bg-[#FFC840] px-6 py-2 rounded-full text-black font-medium">View More</button>
