@@ -5,9 +5,9 @@ const plansController = require("../controllers/plansController");
 
 // Define CRUD routes
 router.get("/", plansController.getAllPlans);
+router.post("/createPlan", plansController.createPlan);
+router.put("/updatePlan", plansController.updatePlan);
+router.delete("/deletePlan", plansController.deletePlan);
 router.get("/:id", plansController.getPlanById);
-router.post("/", plansController.createPlan);
-router.put("/:id", plansController.updatePlan);
-router.delete("/:id", plansController.deletePlan);
 
 module.exports = router;
