@@ -42,7 +42,7 @@ const Page: React.FC = () => {
       </header>
       <div className="relative flex items-center justify-center min-h-screen">
         <div className="absolute top-[130px] left-1/2 transform -translate-x-1/2 w-[900px] h-[200px] border-1 border-[#FFC840] bg-[#FFFFFF] rounded-3xl mb-1">
-          <div className="absolute left-[1px] w-[200px] h-[200px] bg-[#FFFFFF] border-1 border-black rounded-3xl">
+          <div className="shadow-2xl absolute left w-[200px] h-[200px] bg-[#FFFFFF] border-1 border-black rounded-3xl">
             <img src="/images/lumina.png" alt="Lumina Logo" className="absolute top-1/2 left-1/2 w-[50%] h-[50%] transform -translate-x-1/2 -translate-y-1/2" />
           </div>
           <div className="absolute left-[230px] top-[10px]">
@@ -76,14 +76,14 @@ const Page: React.FC = () => {
         </div>
         
         {/* My Policies */}
-        <div className="absolute top-[390px] left-1/2 absolute left-[504px] w-[120px] text-[12px] h-[30px] flex items-center justify-center border-2 border-[#FFC840] text-black font-montserrat font-bold rounded-2xl">
-          <span className="text-center">Policies Owned</span>
+        <div className="absolute top-[42vh] left-1/2 transform -translate-x-1/2 w-[900px] text-[12px] h-[30px] flex items-center justify-start text-black font-montserrat font-bold">
+          <span className="px-3 py-1 rounded-2xl border-2 border-[#FFC840] ml-3 text-left shadow-lg">Policies Owned</span>
         </div>
          <div className="absolute top-[430px] left-1/2 transform -translate-x-1/2 w-[900px] h-[260px] bg-[#FFC840] rounded-3xl mt-1 mb-1">
           <div className="absolute left-[20px] top-[10px] flex flex-col space-y-4">
             <div className="flex items-center space-x-4">
-              <div className="w-[90px] text-[12px] font-montserrat h-[35px] flex items-center justify-center bg-[#FFFFFF] border-1 text-black font-bold rounded-2xl">
-                <span className="text-center">View</span>
+              <div className="hover:bg-[#FFC840] hover:text-[#FFFFFF] w-[90px] text-[12px] font-montserrat h-[35px] flex items-center justify-center bg-[#FFFFFF] border-1 text-black font-bold rounded-2xl">
+                <span className="text-center"><Link href="/clientPolicyExample">View</Link></span>
               </div>
               <div className="text-[14px] font-montserrat font-bold text-black">
                 Retirement (Premium) •
@@ -93,8 +93,8 @@ const Page: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="w-[90px] text-[12px] h-[35px] font-montserrat flex items-center justify-center bg-[#FFFFFF] border-1 border-black text-black font-bold rounded-2xl">
-                <span className="text-center">View</span>
+              <div className="hover:bg-[#FFC840] hover:text-[#FFFFFF] hover:border-[FFFFFF] w-[90px] text-[12px] h-[35px] font-montserrat flex items-center justify-center bg-[#FFFFFF] border-1 border-black text-black font-bold rounded-2xl">
+                <span className="text-center"><Link href="/clientPolicyExample">View</Link></span>
               </div>
               <div className="text-[14px] font-bold font-montserrat text-black">
                 Education (Basic)  •
@@ -104,8 +104,8 @@ const Page: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="w-[90px] text-[12px] h-[35px] font-montserrat flex items-center justify-center bg-[#FFFFFF] border-1 border-black text-black font-bold rounded-2xl">
-                <span className="text-center">View</span>
+              <div className="hover:bg-[#FFC840] hover:text-[#FFFFFF] hover:border-[FFFFFF] w-[90px] text-[12px] h-[35px] font-montserrat flex items-center justify-center bg-[#FFFFFF] border-1 border-black text-black font-bold rounded-2xl">
+                <span className="text-center"><Link href="/clientPolicyExample">View</Link></span>
               </div>
               <div className="text-[14px] font-bold font-montserrat text-black">
                 Health (Premium)  •
@@ -115,8 +115,8 @@ const Page: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="w-[90px] text-[12px] h-[35px] font-montserrat flex items-center justify-center bg-[#FFFFFF] border-1 border-black text-black font-bold rounded-2xl">
-                <span className="text-center">View</span>
+              <div className="hover:bg-[#FFC840] hover:text-[#FFFFFF] hover:border-[FFFFFF] w-[90px] text-[12px] h-[35px] font-montserrat flex items-center justify-center bg-[#FFFFFF] border-1 border-black text-black font-bold rounded-2xl">
+                <span className="text-center"><Link href="/clientPolicyExample">View</Link></span>
               </div>
               <div className="text-[14px] font-bold font-montserrat text-black">
                 Auto (Standard)  •
@@ -126,8 +126,8 @@ const Page: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="w-[90px] text-[12px] h-[35px] font-montserrat flex items-center justify-center bg-[#FFFFFF] border-1 border-black text-black font-bold rounded-2xl">
-                <span className="text-center">View</span>
+              <div className="hover:bg-[#FFC840] hover:text-[#FFFFFF] hover:border-[FFFFFF] w-[90px] text-[12px] h-[35px] font-montserrat flex items-center justify-center bg-[#FFFFFF] border-1 border-black text-black font-bold rounded-2xl">
+                <span className="text-center"><Link href="/clientPolicyExample">View</Link></span>
               </div>
               <div className="text-[14px] font-bold font-montserrat text-black">
                 Auto (Premium)  •
@@ -149,7 +149,7 @@ const Page: React.FC = () => {
             Status: Active
             </div>
             <div className="text-[14px] font-normal text-black font-montserrat mt-8">
-            Status: Pending
+            Status: Under Review
             </div>
             <div className="text-[14px] font-normal text-black font-montserrat mt-8">
             Status: Under Review

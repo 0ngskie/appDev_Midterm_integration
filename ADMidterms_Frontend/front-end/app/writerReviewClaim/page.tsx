@@ -1,10 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
 
 const ClaimSubmission: React.FC = () => {
   const router = useRouter(); // Initialize the router
+  const [policyType, setPolicyType] = useState("");
+  const [decision, setDecision] = useState<string>("");
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-[#F8F8F8] p-6">
@@ -105,7 +107,13 @@ const ClaimSubmission: React.FC = () => {
               {["Retirement Claim", "Education Claim", "Health Claim", "Auto Claim"].map(
                 (type, index) => (
                   <label key={index} className="flex items-center space-x-2">
-                    <input type="checkbox" />
+                    <input
+                      type="radio"
+                      name="policyType"
+                      value={type}
+                      checked={policyType === type}
+                      onChange={(e) => setPolicyType(e.target.value)}
+                    />
                     <span>{type}</span>
                   </label>
                 )
@@ -117,16 +125,34 @@ const ClaimSubmission: React.FC = () => {
           <div className="grid grid-cols-2 gap-6 mt-6">
             {/* Required Supporting Documents */}
             <div>
-              <h3 className="text-black font-bold mb-2">Required Supporting Documents</h3>
+              <h3 className="text-black font-bold mb-2">Required Documents</h3>
               <div className="grid grid-cols-1 gap-1 text-black">
                 {[
                   "Valid Government ID",
                   "Copy of Policy Contract",
+                ].map((doc, index) => (
+                  <label key={index} className="flex items-center space-x-2">
+                    <input type="checkbox" />
+                    <span>{doc}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Supporting Documents & Declaration in Two-Column Layout */}
+          <div className="grid grid-cols-2 gap-6 mt-6">
+            {/* Supporting Documents */}
+            <div>
+              <h3 className="text-black font-bold mb-2">Supporting Documents</h3>
+              <div className="grid grid-cols-1 gap-1 text-black">
+                {[
                   "Official Receipts / Billing Statements",
                   "Medical or Hospital Records",
                   "Police Report / Incident Report",
                   "Certificate of Retirement / Age Verification",
                   "School Registration / Proof of Enrollment",
+                  "Death Certificate",
                   "Others_______________________",
                 ].map((doc, index) => (
                   <label key={index} className="flex items-center space-x-2">
@@ -138,7 +164,7 @@ const ClaimSubmission: React.FC = () => {
             </div>
 
             {/* Declaration & Signature */}
-            <div className="bg-white p-4 h-55 mt-1 rounded-lg shadow-md">
+            <div className="bg-white p-4 h-55 mt-1 mb-4 rounded-lg shadow-md">
               <h3 className="text-black font-bold mb-2">Declaration & Signature</h3>
               <p className="text-sm text-black">
                 I, the undersigned, hereby declare that the above information is true and
@@ -202,16 +228,26 @@ const ClaimSubmission: React.FC = () => {
           </p>
           <div className="flex justify-center items-center mt-2">
             <label className="mx-2 flex items-center">
-              <input type="radio" name="decision" value="accept" className="mr-1" />
+            <input
+            type="radio"
+            name="decision"
+            value="accept"
+            className="mr-1"
+            checked={decision === "accept"}
+            onChange={(e) => setDecision(e.target.value)} // Update the state when clicked
+          />
               <em><strong>Accept</strong></em>
             </label>
             <label className="mx-2 flex items-center">
-              <input type="radio" name="decision" value="reject" className="mr-1" />
+            <input
+            type="radio"
+            name="decision"
+            value="reject"
+            className="mr-1"
+            checked={decision === "reject"}
+            onChange={(e) => setDecision(e.target.value)} // Update the state when clicked
+          />
               <em><strong>Reject</strong></em>
-            </label>
-            <label className="mx-2 flex items-center">
-              <input type="radio" name="decision" value="pending" className="mr-1" />
-              <em><strong>Pending Review</strong></em>
             </label>
           </div>
           <p className="text-justify mt-4">
