@@ -1,6 +1,6 @@
 const db = require('../mysql/mysqlConnection');
 const Payment = require('../models/payment');
-const paymentRoutes = require('./routes/payment');
+const paymentRoutes = require('../routes/paymentRoute');
 
 // Get all payments
 exports.getAllPayments = (req, res) => {
