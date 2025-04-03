@@ -20,8 +20,9 @@ const PolicyCertificate: React.FC = () => {
                 <p>Agent Name: Dave Mercado</p>
                 <p>Status: Pending Review</p>
             </div>
-
-            <div className="min-h-screen bg-gray-100 text-black font-montserrat px-6 py-8 relative max-w-5xl mx-auto rounded border-3 border-3-gray-300 shadow-lg mt-8 mb-8">
+            
+            {/* Form Sheet */}
+            <div className="bg-gray-100 text-black font-montserrat px-6 py-8 relative max-w-5xl mx-auto rounded border-3 border-3-gray-300 shadow-lg mt-8 mb-8">
 
                 <div className="flex items-start">
                     <div className="flex flex-col items-start">
@@ -30,10 +31,10 @@ const PolicyCertificate: React.FC = () => {
                     <div className="text-right ml-auto">
                         <h1 className="text-xl font-bold">Certificate of Insurance</h1>
                         <div className="bg-white rounded border-2 text-left pl-2 mt-2 mb-2">
-                            <label className="text-sm">Policy Effective Date</label>
+                            <label className="text-sm">January 1, 2025</label>
                         </div>
                         <div className="bg-white rounded border-2 text-left pl-2">
-                            <label className="text-sm">Policy Number</label>
+                            <label className="text-sm">#12345</label>
                         </div>
                     </div>
                 </div>
@@ -173,17 +174,17 @@ const PolicyCertificate: React.FC = () => {
                             {/* Retirement Plan */}
                             <p className="ml-4 font-semibold">• Retirement Plan</p>
                             <div className="ml-4">
-                                <label className="block"><input type="checkbox" className="mr-2" />Basic – ₱1.2M at the age of 60 (₱2,000/mo) for 20 years</label>
-                                <label className="block"><input type="checkbox" className="mr-2" />Standard – ₱2.5M + Healthcare (₱3,800/mo) for 25 years</label>
-                                <label className="block"><input type="checkbox" className="mr-2" />Premium – ₱5M + Family Pension (₱7,000/mo) until age 60 (min. 20 years)</label>
+                                <label className="block"><input type="radio" name="plan" className="mr-2" />Basic – ₱1.2M at the age of 60 (₱2,000/mo) for 20 years</label>
+                                <label className="block"><input type="radio" name="plan" className="mr-2" />Standard – ₱2.5M + Healthcare (₱3,800/mo) for 25 years</label>
+                                <label className="block"><input type="radio" name="plan" className="mr-2" />Premium – ₱5M + Family Pension (₱7,000/mo) until age 60 (min. 20 years)</label>
                             </div><br />
 
                             {/* Health Insurance */}
                             <p className="ml-4 font-semibold">• Health Insurance</p>
                             <div className="ml-4">
-                                <label className="block"><input type="checkbox" className="mr-2" />Basic – ₱150K/year (₱1,000/mo) for 5 years</label>
-                                <label className="block"><input type="checkbox" className="mr-2" />Standard – ₱400K/year + OPD (₱2,200/mo) for 10 years</label>
-                                <label className="block"><input type="checkbox" className="mr-2" />Premium – ₱1M/year + Dental/Maternity (₱4,500/mo) for 15 years</label>
+                                <label className="block"><input type="radio" name="plan" className="mr-2" />Basic – ₱150K/year (₱1,000/mo) for 5 years</label>
+                                <label className="block"><input type="radio" name="plan" className="mr-2" />Standard – ₱400K/year + OPD (₱2,200/mo) for 10 years</label>
+                                <label className="block"><input type="radio" name="plan" className="mr-2" />Premium – ₱1M/year + Dental/Maternity (₱4,500/mo) for 15 years</label>
                             </div>
                         </div>
 
@@ -192,17 +193,17 @@ const PolicyCertificate: React.FC = () => {
                             {/* Education Plan */}
                             <p className="ml-4 font-semibold">• Education Plan</p>
                             <div className="ml-4">
-                                <label className="block"><input type="checkbox" className="mr-2" />Basic – ₱100K/year for 4 years (₱1,200/mo) for 10 years</label>
-                                <label className="block"><input type="checkbox" className="mr-2" />Standard – ₱200K/year for 5 years (₱2,000/mo) for 12 years</label>
-                                <label className="block"><input type="checkbox" className="mr-2" />Premium – ₱300K/year + Laptop (₱3,500/mo) for 15 years</label>
+                                <label className="block"><input type="radio" name="plan" className="mr-2" />Basic – ₱100K/year for 4 years (₱1,200/mo) for 10 years</label>
+                                <label className="block"><input type="radio" name="plan" className="mr-2" />Standard – ₱200K/year for 5 years (₱2,000/mo) for 12 years</label>
+                                <label className="block"><input type="radio" name="plan" className="mr-2" />Premium – ₱300K/year + Laptop (₱3,500/mo) for 15 years</label>
                             </div><br />
 
                             {/* Auto Insurance */}
                             <p className="ml-4 font-semibold">• Auto Insurance</p>
                             <div className="ml-4">
-                                <label className="block"><input type="checkbox" className="mr-2" />Basic – ₱300K coverage (₱900/mo) for 3 years</label>
-                                <label className="block"><input type="checkbox" className="mr-2" />Standard – ₱700K coverage + roadside assist (₱1,600/mo) for 5 years</label>
-                                <label className="block"><input type="checkbox" className="mr-2" />Premium – ₱1.5M coverage + Car Replacement (₱2,800/mo) for 7 years</label>
+                                <label className="block"><input type="radio" name="plan" className="mr-2" />Basic – ₱300K coverage (₱900/mo) for 3 years</label>
+                                <label className="block"><input type="radio" name="plan" className="mr-2" />Standard – ₱700K coverage + roadside assist (₱1,600/mo) for 5 years</label>
+                                <label className="block"><input type="radio" name="plan" className="mr-2" />Premium – ₱1.5M coverage + Car Replacement (₱2,800/mo) for 7 years</label>
                             </div>
                         </div>
                     </div>
@@ -214,29 +215,30 @@ const PolicyCertificate: React.FC = () => {
                     {/* Payment Frequency */}
                     <div className="ml-4 flex flex-wrap items-center gap-4">
                         <label className="font-semibold">Payment Frequency:</label>
-                        <label><input type="checkbox" className="mr-1" />Monthly</label>
-                        <label><input type="checkbox" className="mr-1" />Quarterly</label>
-                        <label><input type="checkbox" className="mr-1" />Bi-Annually</label>
-                        <label><input type="checkbox" className="mr-1" />Annually</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" />Monthly</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" />Quarterly</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" />Bi-Annually</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" />Annually</label>
                     </div>
 
                     {/* Preferred Due Date */}
                     <div className="ml-4 flex flex-wrap items-center gap-2">
                         <label className="font-semibold">Preferred Due Date:</label>
-                        <input type="text" className="border-b border-black w-32 outline-none" />
-                        <span>
-                            <strong>(<strong>1st, 5th, 10th, 15th, etc.</strong>)</strong>
-                        </span>
+                        <label><input type="radio" name="payment frequency" className="mr-1" />1st</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" />5th</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" />10th</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" />15th</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" />30th</label>
                     </div>
 
                     {/* Payment Method */}
                     <div className="ml-4 flex flex-wrap items-center gap-4 mb-4">
                         <label className="font-semibold">Payment Method:</label>
-                        <label><input type="checkbox" className="mr-1" />Bank Transfer</label>
-                        <label><input type="checkbox" className="mr-1" />GCash</label>
-                        <label><input type="checkbox" className="mr-1" />Credit/Debit</label>
+                        <label><input type="radio" name="payment method" className="mr-1" />Bank Transfer</label>
+                        <label><input type="radio" name="payment method" className="mr-1" />GCash</label>
+                        <label><input type="radio" name="payment method" className="mr-1" />Credit/Debit</label>
                         <label className="flex items-center">
-                            <input type="checkbox" className="mr-1" />
+                            <input type="radio" name="payment method" className="mr-1" />
                             Others: <input type="text" className="ml-2 border-b border-black w-32 outline-none" />
                         </label>
                     </div>
@@ -256,77 +258,51 @@ const PolicyCertificate: React.FC = () => {
                 {/* Section: BENEFICIARIES */}
                 <div className="bg-[#FFC840] font-bold text-center py-2 text-lg mb-4 -mx-6">BENEFICIARIES</div>
 
-                {/* Beneficiaries Grid: 4 columns (Name, Birthdate, Sex, Relationship) */}
-                <div className="grid grid-cols-4 gap-4 text-sm mb-6">
+                {/* Beneficiaries Grid: 6 columns (Name, Birthdate, Sex, Relationship, Contact Number, Email) */}
+                <div className="grid grid-cols-[2fr_1fr_1fr_2fr_2fr] gap-2 text-xs mb-6">
 
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Name<br /></p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Birthdate<br /></p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Sex<br /></p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Relationship to the Insured<br /></p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Name<br /></p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Birthdate<br /></p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Sex<br /></p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Relationship to the Insured<br /></p>
-                    </div>
+                {/* Headers */}
+                <div className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                    <p>Name</p>
+                </div>
+                <div className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                    <p>Birthdate</p>
+                </div>
+                <div className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                    <p>Sex</p>
+                </div>
+                <div className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                    <p>Relationship to the Insured</p>
+                </div>
+                <div className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                    <p>Contact Number/Email</p>
+                </div>
 
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Name<br />   </p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Birthdate<br /> </p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Sex<br /> </p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Relationship to the Insured<br /> </p>
-                    </div>
-
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Name<br />   </p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Birthdate<br /> </p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Sex<br /> </p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Relationship to the Insured<br /> </p>
-                    </div>
-
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Name<br />   </p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Birthdate<br /> </p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Sex<br /> </p>
-                    </div>
-                    <div className="bg-white rounded border-2 p-2">
-                        <p>Relationship to the Insured<br /> </p>
-                    </div>
+                {/* Dynamic Rows */}
+                {[...Array(4)].map((_, i) => (
+                    <>
+                        <div key={`name-${i}`} className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                           <p>Name</p>
+                        </div>
+                        <div key={`birthdate-${i}`} className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                            <p>Birthdate</p>
+                        </div>
+                        <div key={`sex-${i}`} className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                            <p>Sex</p>
+                        </div>
+                        <div key={`relationship-${i}`} className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                            <p>Relationship to the Insured</p>
+                        </div>
+                        <div key={`contact-${i}`} className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                            <p>Contact Number/Email</p>
+                        </div>
+                    </>
+                ))}
                 </div>
 
                 <hr className="border-t-[46px] border-gray-400 mb-4 -mx-6" style={{ borderColor: '#919191', height: '6px' }} />
 
-                {/* Signatures */}
+                {/* Agent Signatures */}
                 <div className="flex items-start mb-6 text-sm mt-10">
                     <div className="text-center w-1/2">
                         <div className="border-t border w-3/4 mx-auto my-2"></div> {/* Line below the name */}
@@ -341,6 +317,7 @@ const PolicyCertificate: React.FC = () => {
                         <img src="/images/lumina.png" alt="Lumina Logo" className="h-30" />
                     </div>
 
+                    {/* Client Signatures */}
                     <div className="text-center w-1/2">
                         <div className="border-t border w-3/4 mx-auto my-2"></div> {/* Line below the name */}
                         <p><strong>Client Name and Signature</strong></p>
@@ -371,10 +348,6 @@ const PolicyCertificate: React.FC = () => {
                     <label className="mx-2 flex items-center">
                         <input type="radio" name="decision" value="reject" className="mr-1" />
                         <em><strong>Reject</strong></em>
-                    </label>
-                    <label className="mx-2 flex items-center">
-                        <input type="radio" name="decision" value="pending" className="mr-1" />
-                        <em><strong>Pending Review</strong></em>
                     </label>
                 </div>
                 <p className="text-justify mt-4">
