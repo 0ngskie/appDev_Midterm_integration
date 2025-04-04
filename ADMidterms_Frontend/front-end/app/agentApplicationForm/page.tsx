@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"; // Import useRouter for navigation
 
 const PolicyCertificate: React.FC = () => {
     const router = useRouter(); // Initialize the router
-
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState('');
     return (
         <div className="relative">
             <div className="absolute rounded-lg right-10">
@@ -269,28 +269,28 @@ const PolicyCertificate: React.FC = () => {
                     {/* Payment Frequency */}
                     <div className="ml-4 flex flex-wrap items-center gap-4">
                         <label className="font-semibold">Payment Frequency:</label>
-                        <label><input type="radio" name="payment frequency" className="mr-1" />Monthly</label>
-                        <label><input type="radio" name="payment frequency" className="mr-1" />Quarterly</label>
-                        <label><input type="radio" name="payment frequency" className="mr-1" />Bi-Annually</label>
-                        <label><input type="radio" name="payment frequency" className="mr-1" />Annually</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" value="Monthly" onChange={(e) => setSelectedPaymentMethod(e.target.value)}/>Monthly</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" value="Quarterly" onChange={(e) => setSelectedPaymentMethod(e.target.value)}/>Quarterly</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" value="Bi-Annually" onChange={(e) => setSelectedPaymentMethod(e.target.value)}/>Bi-Annually</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" value="Annually" onChange={(e) => setSelectedPaymentMethod(e.target.value)}/>Annually</label>
                     </div>
 
                     {/* Preferred Due Date */}
                     <div className="ml-4 flex flex-wrap items-center gap-2">
                         <label className="font-semibold">Preferred Due Date:</label>
-                        <label><input type="radio" name="payment frequency" className="mr-1" />1st</label>
-                        <label><input type="radio" name="payment frequency" className="mr-1" />5th</label>
-                        <label><input type="radio" name="payment frequency" className="mr-1" />10th</label>
-                        <label><input type="radio" name="payment frequency" className="mr-1" />15th</label>
-                        <label><input type="radio" name="payment frequency" className="mr-1" />30th</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" value="1st" onChange={(e) => setSelectedPaymentMethod(e.target.value)}/>1st</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" value="5th" onChange={(e) => setSelectedPaymentMethod(e.target.value)}/>5th</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" value="1oth" onChange={(e) => setSelectedPaymentMethod(e.target.value)}/>10th</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" value="15th" onChange={(e) => setSelectedPaymentMethod(e.target.value)}/>15th</label>
+                        <label><input type="radio" name="payment frequency" className="mr-1" value="3oth" onChange={(e) => setSelectedPaymentMethod(e.target.value)}/>30th</label>
                     </div>
 
                     {/* Payment Method */}
                     <div className="ml-4 flex flex-wrap items-center gap-4 mb-4">
                         <label className="font-semibold">Payment Method:</label>
-                        <label><input type="radio" name="payment method" className="mr-1" />Bank Transfer</label>
-                        <label><input type="radio" name="payment method" className="mr-1" />GCash</label>
-                        <label><input type="radio" name="payment method" className="mr-1" />Credit/Debit</label>
+                        <label><input type="radio" name="payment method" className="mr-1" value="Bank Transfer" onChange={(e) => setSelectedPaymentMethod(e.target.value)}/>Bank Transfer</label>
+                        <label><input type="radio" name="payment method" className="mr-1" value="Gcash" onChange={(e) => setSelectedPaymentMethod(e.target.value)}/>GCash</label>
+                        <label><input type="radio" name="payment method" className="mr-1" value="Credit/Debit" onChange={(e) => setSelectedPaymentMethod(e.target.value)}/>Credit/Debit</label>
                         <label className="flex items-center">
                             <input type="radio" name="payment method" className="mr-1" />
                             Others: <input type="text" className="ml-2 border-b border-black w-32 outline-none" />
