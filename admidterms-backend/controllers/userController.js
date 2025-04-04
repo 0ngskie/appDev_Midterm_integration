@@ -3,76 +3,37 @@ const mysqlConnection = require("../mysql/mysqlConnection");
 
 //Ex. Get All Users
 module.exports.getAllUsers = (req, res) => {
+    // Simplified query that only fetches users without joining with non-existent tables
     const query = `
-        SELECT 
-            u.*, 
-            p.policy_id, p.start_date, p.end_date, p.policy_status, 
-            pl.policy_type, pl.plan_type, pl.policy_overview,
-            s.username AS submitted_by, a.username AS approved_by,
-            agent.first_name AS agent_first_name,
-            agent.last_name AS agent_last_name
-        FROM users u
-        LEFT JOIN policy p ON u.user_id = p.user_id
-        LEFT JOIN plans pl ON p.plan_id = pl.plan_id
-        LEFT JOIN users s ON p.submittedBy_id = s.user_id
-        LEFT JOIN users a ON p.approvedBy_id = a.user_id
-        LEFT JOIN users agent ON u.agent_id = agent.user_id
+        SELECT * FROM users
     `;
 
     mysqlConnection.query(query, (error, results) => {
         if (error) {
-            console.error("Error fetching users and policies:", error);
-            return res.status(500).json({ error: "Error fetching users and policies" });
+            console.error("Error fetching users:", error);
+            return res.status(500).json({ error: "Error fetching users" });
         }
 
-        const users = results.reduce((acc, row) => {
-            let user = acc.find(u => u.user_id === row.user_id);
-            if (!user) {
-                user = new User(
-                    row.user_id,
-                    row.first_name,
-                    row.last_name,
-                    row.date_of_birth,
-                    row.age,
-                    row.nationality,
-                    row.contact_number,
-                    row.email,
-                    row.address,
-                    row.province,
-                    row.city,
-                    row.zipcode,
-                    row.country,
-                    row.username,
-                    row.password,
-                    row.role,
-                    row.agent_id
-                );
-                user.policies = [];
-                user.agent = row.agent_id ? {
-                    first_name: row.agent_first_name,
-                    last_name: row.agent_last_name
-                } : null;
-                acc.push(user);
-            }
-
-            if (row.policy_id) {
-                user.policies.push({
-                    policy_id: row.policy_id,
-                    start_date: row.start_date,
-                    end_date: row.end_date,
-                    policy_status: row.policy_status,
-                    submitted_by: row.submitted_by,
-                    approved_by: row.approved_by,
-                    plan: {
-                        policy_type: row.policy_type,
-                        plan_type: row.plan_type,
-                        policy_overview: row.policy_overview
-                    }
-                });
-            }
-
-            return acc;
-        }, []);
+        const users = results.map(row => {
+            return {
+                user_id: row.user_id,
+                first_name: row.first_name,
+                last_name: row.last_name,
+                date_of_birth: row.date_of_birth,
+                age: row.age,
+                nationality: row.nationality,
+                contact_number: row.contact_number,
+                email: row.email,
+                address: row.address,
+                province: row.province,
+                city: row.city,
+                zipcode: row.zipcode,
+                country: row.country,
+                username: row.username,
+                role: row.role,
+                agent_id: row.agent_id
+            };
+        });
 
         res.json(users);
     });
@@ -344,4 +305,89 @@ module.exports.updatePassword = (req, res) => {
             res.json({ message: "Password updated successfully" });
         });
     });
+};
+
+// Verify user information
+module.exports.verifyUser = (req, res) => {
+    const { name, birthdate, nationality, email } = req.body;
+
+    // Split the full name into parts
+    const nameParts = name.split(' ');
+    
+    let first_name, last_name;
+    
+    if (nameParts.length >= 3) {
+        // For names with middle names, try both full first name and first word
+        first_name = nameParts[0]; // "Miguel"
+        const possible_compound_first_name = nameParts.slice(0, -1).join(' '); // "Miguel Louis"
+        last_name = nameParts[nameParts.length - 1]; // "Carandang"
+
+        const query = `
+            SELECT * FROM users 
+            WHERE (first_name = ? OR first_name = ?)
+            AND last_name = ? 
+            AND date_of_birth = ? 
+            AND nationality = ? 
+            AND email = ?
+        `;
+
+        mysqlConnection.query(query, [first_name, possible_compound_first_name, last_name, birthdate, nationality, email], (error, results) => {
+            if (error) {
+                console.error("Error verifying user:", error);
+                return res.status(500).json({ 
+                    success: false,
+                    message: "Error verifying user information" 
+                });
+            }
+
+            if (results.length === 0) {
+                return res.status(404).json({ 
+                    success: false,
+                    message: "No matching user found with the provided information" 
+                });
+            }
+
+            // User found, verification successful
+            res.json({
+                success: true,
+                message: "User verified successfully"
+            });
+        });
+    } else {
+        // For simple two-part names
+        first_name = nameParts[0];
+        last_name = nameParts[1] || '';
+
+        const query = `
+            SELECT * FROM users 
+            WHERE first_name = ? 
+            AND last_name = ? 
+            AND date_of_birth = ? 
+            AND nationality = ? 
+            AND email = ?
+        `;
+
+        mysqlConnection.query(query, [first_name, last_name, birthdate, nationality, email], (error, results) => {
+            if (error) {
+                console.error("Error verifying user:", error);
+                return res.status(500).json({ 
+                    success: false,
+                    message: "Error verifying user information" 
+                });
+            }
+
+            if (results.length === 0) {
+                return res.status(404).json({ 
+                    success: false,
+                    message: "No matching user found with the provided information" 
+                });
+            }
+
+            // User found, verification successful
+            res.json({
+                success: true,
+                message: "User verified successfully"
+            });
+        });
+    }
 };

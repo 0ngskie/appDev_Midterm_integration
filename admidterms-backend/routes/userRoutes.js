@@ -20,4 +20,7 @@ router.put('/users/:id', userController.updateUser);
 // Update user password
 router.put('/users/:id/password', userController.updatePassword);
 
+// Verify user information
+router.post('/users/verify', userController.verifyUser);
+
 module.exports = router; 

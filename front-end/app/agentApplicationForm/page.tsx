@@ -1,9 +1,79 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
+
 const PolicyCertificate: React.FC = () => {
     const router = useRouter(); // Initialize the router
+    const [verificationMessage, setVerificationMessage] = useState<string>("");
+    const [formData, setFormData] = useState({
+        name: "",
+        birthdate: "",
+        nationality: "",
+        email: ""
+    });
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const verifyUser = async () => {
+        try {
+            // Check if birthdate is valid before formatting
+            if (!formData.birthdate) {
+                setVerificationMessage("Please enter a valid birthdate");
+                return;
+            }
+
+            // Format the birthdate to YYYY-MM-DD
+            let formattedBirthdate;
+            try {
+                // Try to parse the date in various formats
+                const dateParts = formData.birthdate.split('/');
+                if (dateParts.length === 3) {
+                    // Assume MM/DD/YYYY format
+                    formattedBirthdate = `${dateParts[2]}-${dateParts[0].padStart(2, '0')}-${dateParts[1].padStart(2, '0')}`;
+                } else {
+                    // Try to parse as a standard date
+                    const date = new Date(formData.birthdate);
+                    if (isNaN(date.getTime())) {
+                        throw new Error("Invalid date");
+                    }
+                    formattedBirthdate = date.toISOString().split('T')[0];
+                }
+            } catch {
+                setVerificationMessage("Please enter a valid birthdate in MM/DD/YYYY format");
+                return;
+            }
+
+            const response = await fetch('http://localhost:5000/users/verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: formData.name.trim(), // Ensure no extra spaces
+                    birthdate: formattedBirthdate,
+                    nationality: formData.nationality,
+                    email: formData.email
+                })
+            });
+
+            if (response.ok) {
+                setVerificationMessage("User verified successfully!");
+            } else {
+                const errorData = await response.json();
+                setVerificationMessage(errorData.message || "User verification failed. Please check the information.");
+            }
+        } catch (error) {
+            setVerificationMessage("Error verifying user. Please try again.");
+            console.error('Error:', error);
+        }
+    };
 
     return (
         <div className="relative">
@@ -87,70 +157,82 @@ const PolicyCertificate: React.FC = () => {
 
                             <div className="space-y-4">
                                 <div className="bg-white rounded border-2 p-2">
-                                <input
-                                type="text"
-                                placeholder="Name"
-                                className="focus:outline-none w-full"
-                                 />
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleInputChange}
+                                        placeholder="Name"
+                                        className="focus:outline-none w-full"
+                                    />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="bg-white rounded border-2 p-2">
                                         <input
-                                    type="text"
-                                    placeholder="Birthdate"
-                                    className="focus:outline-none w-full"
-                                    />
+                                            type="text"
+                                            name="birthdate"
+                                            value={formData.birthdate}
+                                            onChange={handleInputChange}
+                                            placeholder="Birthdate"
+                                            className="focus:outline-none w-full"
+                                        />
                                     </div>
                                     <div className="bg-white rounded border-2 p-2">
                                         <input
-                                    type="text"
-                                    placeholder="Birthplace"
-                                    className="focus:outline-none w-full"
-                                    />
+                                            type="text"
+                                            placeholder="Birthplace"
+                                            className="focus:outline-none w-full"
+                                        />
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="bg-white rounded border-2 p-2">
-                                    <input
-                                    type="text"
-                                    placeholder="Issue Age"
-                                    className="focus:outline-none w-full"
-                                    />
+                                        <input
+                                            type="text"
+                                            placeholder="Issue Age"
+                                            className="focus:outline-none w-full"
+                                        />
                                     </div>
                                     <div className="bg-white rounded border-2 p-2">
-                                    <input
-                                    type="text"
-                                    placeholder="Sex"
-                                    className="focus:outline-none w-full"
-                                    />
+                                        <input
+                                            type="text"
+                                            placeholder="Sex"
+                                            className="focus:outline-none w-full"
+                                        />
                                     </div>
                                 </div>
                             </div>
 
                             <div className="space-y-4">
                                 <div className="bg-white rounded border-2 p-2">
-                                <input
-                                    type="text"
-                                    placeholder="Civil Status"
-                                    className="focus:outline-none w-full"
+                                    <input
+                                        type="text"
+                                        placeholder="Civil Status"
+                                        className="focus:outline-none w-full"
                                     />
                                 </div>
 
                                 <div className="bg-white rounded border-2 p-2">
-                                <input
-                                    type="text"
-                                    placeholder="Nationality"
-                                    className="focus:outline-none w-full"
+                                    <input
+                                        type="text"
+                                        name="nationality"
+                                        value={formData.nationality}
+                                        onChange={handleInputChange}
+                                        placeholder="Nationality"
+                                        className="focus:outline-none w-full"
                                     />
                                 </div>
 
                                 <div className="bg-white rounded border-2 p-2">
-                                <input
-                                    type="text"
-                                    placeholder="Email"
-                                    className="focus:outline-none w-full"
+                                    <input
+                                        type="text"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                        placeholder="Email"
+                                        className="focus:outline-none w-full"
                                     />
                                 </div>
                             </div>
@@ -163,52 +245,52 @@ const PolicyCertificate: React.FC = () => {
                     <h2 className="font-bold text-lg mb-4">Address of the Owner/Applicant</h2>
                     <div className="grid grid-cols-2 gap-4 mb-4">
                         <div className="bg-white rounded border-2 p-2">
-                        <input
-                                    type="text"
-                                    placeholder="Street Address"
-                                    className="focus:outline-none w-full"
-                                    />
+                            <input
+                                type="text"
+                                placeholder="Street Address"
+                                className="focus:outline-none w-full"
+                            />
                         </div>
                         <div className="bg-white rounded border-2 p-2">
-                        <input
-                                    type="text"
-                                    placeholder="Barangay"
-                                    className="focus:outline-none w-full"
-                                    />
+                            <input
+                                type="text"
+                                placeholder="Barangay"
+                                className="focus:outline-none w-full"
+                            />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 mb-4">
                         <div className="bg-white rounded border-2 p-2">
-                        <input
-                                    type="text"
-                                    placeholder="State/Province"
-                                    className="focus:outline-none w-full"
-                                    />
+                            <input
+                                type="text"
+                                placeholder="State/Province"
+                                className="focus:outline-none w-full"
+                            />
                         </div>
                         <div className="bg-white rounded border-2 p-2">
-                        <input
-                                    type="text"
-                                    placeholder="City Address"
-                                    className="focus:outline-none w-full"
-                                    />
+                            <input
+                                type="text"
+                                placeholder="City Address"
+                                className="focus:outline-none w-full"
+                            />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="bg-white rounded border-2 p-2">
-                        <input
-                                    type="text"
-                                    placeholder="Zip/Postal Code"
-                                    className="focus:outline-none w-full"
-                                    />
+                            <input
+                                type="text"
+                                placeholder="Zip/Postal Code"
+                                className="focus:outline-none w-full"
+                            />
                         </div>
                         <div className="bg-white rounded border-2 p-2">
-                        <input
-                                    type="text"
-                                    placeholder="Country"
-                                    className="focus:outline-none w-full"
-                                    />
+                            <input
+                                type="text"
+                                placeholder="Country"
+                                className="focus:outline-none w-full"
+                            />
                         </div>
                     </div>
                 </div>
@@ -351,43 +433,43 @@ const PolicyCertificate: React.FC = () => {
 
                 {/* Dynamic Rows */}
                 {[...Array(4)].map((_, i) => (
-                    <>
-                    <div key={`name-${i}`} className="bg-white rounded border-2 p-2 whitespace-nowrap">
-                        <input
-                        type="text"
-                        placeholder="Name"
-                        className="focus:outline-none w-full"
-                        />
-                    </div>
-                    <div key={`birthdate-${i}`} className="bg-white rounded border-2 p-2 whitespace-nowrap">
-                        <input
-                        type="text"
-                        placeholder="Birthdate"
-                        className="focus:outline-none w-full"
-                        />
-                    </div>
-                    <div key={`sex-${i}`} className="bg-white rounded border-2 p-2 whitespace-nowrap">
-                        <input
-                        type="text"
-                        placeholder="Sex"
-                        className="focus:outline-none w-full"
-                        />
-                    </div>
-                    <div key={`relationship-${i}`} className="bg-white rounded border-2 p-2 whitespace-nowrap">
-                        <input
-                        type="text"
-                        placeholder="Relationship to the Insured"
-                        className="focus:outline-none w-full"
-                        />
-                    </div>
-                    <div key={`contact-${i}`} className="bg-white rounded border-2 p-2 whitespace-nowrap">
-                        <input
-                        type="text"
-                        placeholder="Contact Number/Email"
-                        className="focus:outline-none w-full"
-                        />
-                    </div>    
-                    </>
+                    <React.Fragment key={`beneficiary-${i}`}>
+                        <div className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                            <input
+                                type="text"
+                                placeholder="Name"
+                                className="focus:outline-none w-full"
+                            />
+                        </div>
+                        <div className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                            <input
+                                type="text"
+                                placeholder="Birthdate"
+                                className="focus:outline-none w-full"
+                            />
+                        </div>
+                        <div className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                            <input
+                                type="text"
+                                placeholder="Sex"
+                                className="focus:outline-none w-full"
+                            />
+                        </div>
+                        <div className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                            <input
+                                type="text"
+                                placeholder="Relationship to the Insured"
+                                className="focus:outline-none w-full"
+                            />
+                        </div>
+                        <div className="bg-white rounded border-2 p-2 whitespace-nowrap">
+                            <input
+                                type="text"
+                                placeholder="Contact Number/Email"
+                                className="focus:outline-none w-full"
+                            />
+                        </div>
+                    </React.Fragment>
                 ))}
                 </div>
 
@@ -440,8 +522,23 @@ const PolicyCertificate: React.FC = () => {
                 <div className="text-medium text-justify leading-snug space-y-2 ml-4 mr-4" style={{ fontStyle: 'italic' }}>
                     <p>This application form is a formal expression of interest and does not constitute a binding insurance policy until underwriting is complete and approved. All personal data collected will be processed in accordance with the Data Privacy Act of 2012.</p>
                     <br />Need Assistance? Call (02) 1234-5678 or email: support@lumina.com.ph
-                    <button 
-                        className="ml-40 bg-[#FFC840] text-black py-3 px-10 rounded-lg text-sm font-bold shadow-none hover:shadow-inner transition-shadow duration-300">
+                </div>
+
+                {/* Add verification message and submit button */}
+                <div className="mt-6 text-center">
+                    {verificationMessage && (
+                        <div className={`mb-4 p-3 rounded ${
+                            verificationMessage.includes("successfully") 
+                                ? "bg-green-100 text-green-700" 
+                                : "bg-red-100 text-red-700"
+                        }`}>
+                            {verificationMessage}
+                        </div>
+                    )}
+                    <button
+                        onClick={verifyUser}
+                        className="bg-[#FFC840] text-black py-3 px-10 rounded-lg text-sm font-bold shadow-none hover:shadow-inner transition-shadow duration-300"
+                    >
                         Submit to Writer
                     </button>
                 </div>
