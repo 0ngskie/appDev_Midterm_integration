@@ -45,7 +45,7 @@ const ClaimsAndServices: React.FC = () => {
                     We understand that filing a claim can be a stressful time. That's why we've streamlined the process to be as efficient and hassle-free as possible.
                 </p>
 
-                <Link href="/clientClaimSubmission">
+                <Link href="/ClientClaimSubmission">
                     <button className="bg-[#FFC840] text-black py-3 px-6 rounded-lg font-montserrat font-bold mt-6">SUBMIT CLAIMS</button>
                 </Link>
             </main>
