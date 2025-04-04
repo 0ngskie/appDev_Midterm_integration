@@ -1,25 +1,97 @@
-const Policy = require("../models/policy");
+const Policy = require("../models/policymodel");
 const mysqlConnection = require("../mysql/mysqlConnection");
 
-// Create y
+// Create Policy
 module.exports.createPolicy = (req, res) => {
-    const { description, policy_type, start_date, end_date, user_id, plan_id } = req.body;
-    const query = "INSERT INTO policy (description, policy_type, start_date, end_date, user_id, plan_id) VALUES (?, ?, ?, ?, ?, ?)";
-    mysqlConnection.query(query, [description, policy_type, start_date, end_date, user_id, plan_id], (error, results) => {
-        if (error) {
-            console.error("Error creating policy:", error);
-            return res.status(500).json({ error: "Error creating policy" });
+    const {
+        start_date,
+        end_date,
+        policy_status = "Under review", // Default value
+        user_id,
+        plan_id,
+        submittedBy_id,
+        approvedBy_id,
+        policy_type,
+        supporting_document,
+    } = req.body;
+
+    // Validate required fields
+    if (!start_date || !end_date || !user_id || !plan_id || !policy_type || !supporting_document) {
+        return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    // Ensure supporting_documents is an array
+    if (!Array.isArray(supporting_document)) {
+        return res.status(400).json({ error: "Supporting documents must be an array" });
+    }
+
+    // Validate the number of supporting documents
+    if (supporting_document.length > 3) {
+        return res.status(400).json({ error: "You can select up to three supporting documents only" });
+    }
+
+    // Define allowed supporting documents based on policy type
+    const allowedDocuments = {
+        "Auto Insurance": ["Valid government ID", "Vehicle info"],
+        "Education Plan": ["Valid government ID", "Birth certificate", "School documents"],
+        "Health Insurance": ["Valid government ID", "Health declaration form"],
+        "Retirement Plan": ["Valid government ID", "Proof of income"],
+    };
+
+    // Check if the policy_type is valid
+    if (!allowedDocuments[policy_type]) {
+        return res.status(400).json({ error: `Invalid policy type: ${policy_type}` });
+    }
+
+    // Validate each supporting document
+    for (const document of supporting_document) {
+        if (!allowedDocuments[policy_type].includes(document)) {
+            return res.status(400).json({
+                error: `Invalid supporting document for ${policy_type}. Allowed documents: ${allowedDocuments[policy_type].join(", ")}`,
+            });
         }
-        res.status(201).json({ message: "Policy created successfully", policy_id: results.insertId });
-    });
+    }
+
+    // Convert the array of supporting documents to a comma-separated string for storage
+    const supportingDocumentString = supporting_document.join(", ");
+
+    const query = `
+        INSERT INTO policy (
+            start_date, end_date, policy_status, user_id, plan_id, 
+            submittedBy_id, approvedBy_id, policy_type, supporting_document
+        ) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    mysqlConnection.query(
+        query,
+        [
+            start_date,
+            end_date,
+            policy_status,
+            user_id,
+            plan_id,
+            submittedBy_id || null,
+            approvedBy_id || null,
+            policy_type,
+            supportingDocumentString || null,
+        ],
+        (error, results) => {
+            if (error) {
+                console.error("Error creating policy:", error);
+                return res.status(500).json({ error: "Error creating policy" });
+            }
+            res.status(201).json({ message: "Policy created successfully", policy_id: results.insertId });
+        }
+    );
 };
 
-// Read no
+// Get All Policies
 module.exports.getAllPolicies = (req, res) => {
     const query = `
         SELECT 
             policy_id, start_date, end_date, policy_status, 
-            user_id, plan_id, submittedBy_id, approvedBy_id
+            user_id, plan_id, submittedBy_id, approvedBy_id, 
+            policy_type, supporting_document
         FROM policy
     `;
 
@@ -37,17 +109,26 @@ module.exports.getAllPolicies = (req, res) => {
             row.user_id,
             row.plan_id,
             row.submittedBy_id,
-            row.approvedBy_id
+            row.approvedBy_id,
+            row.policy_type,
+            row.supporting_document
         ));
 
         res.json(policies);
     });
 };
 
-// Read singel
+// Get Policy by ID
 module.exports.getPolicyById = (req, res) => {
     const { id } = req.params;
-    const query = "SELECT * FROM policy WHERE policy_id = ?";
+    const query = `
+        SELECT 
+            policy_id, start_date, end_date, policy_status, 
+            user_id, plan_id, submittedBy_id, approvedBy_id, 
+            policy_type, supporting_documents
+        FROM policy 
+        WHERE policy_id = ?
+    `;
     mysqlConnection.query(query, [id], (error, results) => {
         if (error) {
             console.error("Error fetching policy:", error);
@@ -56,33 +137,77 @@ module.exports.getPolicyById = (req, res) => {
         if (results.length === 0) {
             return res.status(404).json({ error: "Policy not found" });
         }
-        res.json(results[0]);
+        const policy = new Policy(
+            results[0].policy_id,
+            results[0].start_date,
+            results[0].end_date,
+            results[0].policy_status,
+            results[0].user_id,
+            results[0].plan_id,
+            results[0].submittedBy_id,
+            results[0].approvedBy_id,
+            results[0].policy_type,
+            results[0].supporting_documents
+        );
+        res.json(policy);
     });
 };
 
-// Update  
+// Update Policy
 module.exports.updatePolicy = (req, res) => {
     const { id } = req.params;
-    const { description, policy_status, start_date, end_date, user_id, plan_id, submittedBy_id, approvedBy_id } = req.body;
+    const {
+        start_date,
+        end_date,
+        policy_status,
+        user_id,
+        plan_id,
+        submittedBy_id,
+        approvedBy_id,
+        policy_type,
+        supporting_document,
+    } = req.body;
+
+    // Validate required fields
+    if (!start_date || !end_date || !user_id || !plan_id || !policy_type) {
+        return res.status(400).json({ error: "Missing required fields" });
+    }
+
     const query = `
         UPDATE policy 
-        SET description = ?, policy_status = ?, start_date = ?, end_date = ?, 
-            user_id = ?, plan_id = ?, submittedBy_id = ?, approvedBy_id = ? 
+        SET start_date = ?, end_date = ?, policy_status = ?, 
+            user_id = ?, plan_id = ?, submittedBy_id = ?, 
+            approvedBy_id = ?, policy_type = ?, supporting_document = ? 
         WHERE policy_id = ?
     `;
-    mysqlConnection.query(query, [description, policy_status, start_date, end_date, user_id, plan_id, submittedBy_id, approvedBy_id, id], (error, results) => {
-        if (error) {
-            console.error("Error updating policy:", error);
-            return res.status(500).json({ error: "Error updating policy" });
+    mysqlConnection.query(
+        query,
+        [
+            start_date,
+            end_date,
+            policy_status,
+            user_id,
+            plan_id,
+            submittedBy_id || null,
+            approvedBy_id || null,
+            policy_type,
+            supporting_document || null,
+            id,
+        ],
+        (error, results) => {
+            if (error) {
+                console.error("Error updating policy:", error);
+                return res.status(500).json({ error: "Error updating policy" });
+            }
+            if (results.affectedRows === 0) {
+                return res.status(404).json({ error: "Policy not found" });
+            }
+            res.json({ message: "Policy updated successfully" });
         }
-        if (results.affectedRows === 0) {
-            return res.status(404).json({ error: "Policy not found" });
-        }
-        res.json({ message: "Policy updated successfully" });
-    });
+    );
 };
 
-// Delet 
+// Delete Policy
 module.exports.deletePolicy = (req, res) => {
     const { id } = req.params;
     const query = "DELETE FROM policy WHERE policy_id = ?";
