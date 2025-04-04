@@ -66,7 +66,7 @@ export default function Page() {
 
   const fetchUserData = async (userId: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/users/${userId}`);
+      const response = await fetch(`http://localhost:5000/users/${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch user data');
       }
@@ -129,7 +129,7 @@ export default function Page() {
 
   const handleSaveProfile = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/users/${userData.user_id}`, {
+      const response = await fetch(`http://localhost:5000/users/${userData.user_id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -165,7 +165,7 @@ export default function Page() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/users/${userData.user_id}/password`, {
+      const response = await fetch(`http://localhost:5000/users/${userData.user_id}/password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

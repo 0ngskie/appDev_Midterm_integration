@@ -70,7 +70,7 @@ const Profile: React.FC = () => {
         const { user_id } = JSON.parse(storedUserData);
         
         // Fetch complete user profile
-        const response = await fetch(`http://localhost:5000/api/users/${user_id}`);
+        const response = await fetch(`http://localhost:5000/users/${user_id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch user data');
         }
@@ -137,7 +137,7 @@ const Profile: React.FC = () => {
         setError("");
         setSuccess("");
 
-        const response = await fetch(`http://localhost:5000/api/users/${userData.user_id}`, {
+        const response = await fetch(`http://localhost:5000/users/${userData.user_id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ const Profile: React.FC = () => {
         }
 
         // Send password update request
-        const response = await fetch(`http://localhost:5000/api/users/${userData.user_id}/password`, {
+        const response = await fetch(`http://localhost:5000/users/${userData.user_id}/password`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
