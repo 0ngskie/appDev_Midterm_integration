@@ -55,8 +55,15 @@ exports.getAllClaims = (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
   const offset = (page - 1) * limit;
 
-  const query =
-    "SELECT * FROM claims ORDER BY claim_date DESC LIMIT ? OFFSET ?";
+  const query = `
+    SELECT claim_id, claim_date, amount_claimed, status, full_name, claimant_dob,
+           claimant_contact_Number, claimant_relationship, event_date, event_location, 
+           event_description, policy_type, required_document, supporting_document, 
+           policy_id, client_id, beneficiary_id
+    FROM claims
+    ORDER BY claim_date DESC
+    LIMIT ? OFFSET ?`;
+
   const countQuery = "SELECT COUNT(*) as total FROM claims";
 
   mysqlConnection.query(countQuery, (countError, countResults) => {
@@ -71,29 +78,20 @@ exports.getAllClaims = (req, res) => {
         return res.status(500).json({ error: "Error fetching claims" });
       }
 
-      const claims = results.map(
-        (claim) =>
-          new Claim(
-            claim.claim_id,
-            claim.claim_date,
-            claim.amount_claimed,
-            claim.status,
-            claim.full_name,
-            claim.claimant_dob,
-            claim.claimant_contact_Number,
-            claim.claimant_relationship,
-            claim.event_date,
-            claim.event_location,
-            claim.event_description,
-            claim.policy_type,
-            claim.required_document,
-            claim.supporting_document,
-            claim.policy_id,
-            claim.client_id,
-            claim.beneficiary_id
-          )
-      );
+      // Map results to formatted structure
+      const claims = results.map((claim) => ({
+        id: claim.claim_id,
+        name: claim.full_name,
+        type: claim.policy_type,
+        date: new Date(claim.claim_date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        status: claim.status,
+      }));
 
+      // Send the response with pagination data
       res.json({
         data: claims,
         pagination: {
@@ -106,6 +104,8 @@ exports.getAllClaims = (req, res) => {
     });
   });
 };
+
+
 
 // Create a new claim
 exports.createClaim = (req, res) => {
@@ -444,173 +444,49 @@ exports.updateClaim = (req, res) => {
     { params: { id } },
     {
       json: (existingClaim) => {
+        // Fix: Allow "Accepted" to be changed to "Rejected" or "Under Review"
         if (
-          existingClaim.status === "Accepted" ||
-          existingClaim.status === "Reject"
+          existingClaim.status === "Accepted" &&
+          req.body.status !== "Rejected" &&
+          req.body.status !== "Under Review"
         ) {
           return res.status(403).json({
-            error:
-              "Claims with status 'Accepted' or 'Reject' cannot be modified",
+            error: "Claims with status 'Accepted' can only be changed to 'Rejected' or 'Under Review'."
           });
         }
+        
+        // ✅ Allow changes from "Under Review" or "Rejected" back to "Accepted"
+        if (
+          (existingClaim.status === "Under Review" || existingClaim.status === "Rejected") &&
+          req.body.status === "Accepted"
+        ) {
+          console.log(`Updating claim ${id} status to Accepted`);
+        } else if (existingClaim.status === "Rejected" && req.body.status !== "Under Review") {
+          return res.status(403).json({
+            error: "Rejected claims can only be moved to 'Under Review'."
+          });
+        }
+        
 
         const updates = {
-          claim_date: req.body.claim_date
-            ? sanitize.date(req.body.claim_date)
-            : undefined,
-          amount_claimed: req.body.amount_claimed
-            ? sanitize.number(req.body.amount_claimed)
-            : undefined,
           status: req.body.status
-            ? sanitize.enum(req.body.status, Claim.validStatuses)
-            : undefined,
-          full_name: req.body.full_name
-            ? sanitize.string(req.body.full_name)
-            : undefined,
-          claimant_dob: req.body.claimant_dob
-            ? sanitize.date(req.body.claimant_dob)
-            : undefined,
-          claimant_contact_Number: req.body.claimant_contact_Number
-            ? sanitize.phone(req.body.claimant_contact_Number)
-            : undefined,
-          claimant_relationship: req.body.claimant_relationship
-            ? sanitize.string(req.body.claimant_relationship)
-            : undefined,
-          event_date: req.body.event_date
-            ? sanitize.date(req.body.event_date)
-            : undefined,
-          event_location: req.body.event_location
-            ? sanitize.string(req.body.event_location)
-            : undefined,
-          event_description: req.body.event_description
-            ? sanitize.string(req.body.event_description)
-            : undefined,
-          policy_type: req.body.policy_type
-            ? sanitize.enum(req.body.policy_type, [
-                "Retirement",
-                "Education",
-                "Health",
-                "Auto",
-              ])
-            : undefined,
-          required_document: req.body.required_document
-            ? sanitize.enum(req.body.required_document, Claim.requiredDocuments)
-            : undefined,
-          supporting_document: req.body.supporting_document
-            ? sanitize.enum(
-                req.body.supporting_document,
-                Claim.supportingDocuments
-              )
-            : undefined,
-          policy_id: req.body.policy_id
-            ? sanitize.number(req.body.policy_id)
-            : undefined,
-          client_id: req.body.client_id
-            ? sanitize.number(req.body.client_id)
-            : undefined,
-          beneficiary_id: req.body.beneficiary_id
-            ? sanitize.number(req.body.beneficiary_id)
-            : null,
+  ? sanitize.enum(req.body.status, ["Unclaimed", "Processing", "Under Review", "Accepted", "Rejected", "Claimed"])
+  : undefined,
         };
 
-        // Validate amount if provided
-        if (updates.amount_claimed && updates.amount_claimed <= 0) {
-          return res
-            .status(400)
-            .json({ error: "Amount must be a positive number" });
-        }
+        const query = `UPDATE claims SET status = COALESCE(?, status) WHERE claim_id = ?`;
+        const values = [updates.status, id];
 
-        // Validate dates if provided
-        if (updates.event_date && new Date(updates.event_date) > new Date()) {
-          return res
-            .status(400)
-            .json({ error: "Event date cannot be in the future" });
-        }
-
-        // Check references if provided
-        const checkReferences = (callback) => {
-          if (updates.policy_id) {
-            checkPolicyExists(updates.policy_id, (error, exists) => {
-              if (error) return callback(error);
-              if (!exists) return callback(new Error("Policy does not exist"));
-              callback(null);
-            });
-          } else if (updates.client_id) {
-            checkClientExists(updates.client_id, (error, exists) => {
-              if (error) return callback(error);
-              if (!exists) return callback(new Error("Client does not exist"));
-              callback(null);
-            });
-          } else if (updates.beneficiary_id !== undefined) {
-            checkBeneficiaryExists(updates.beneficiary_id, (error, exists) => {
-              if (error) return callback(error);
-              if (!exists)
-                return callback(new Error("Beneficiary does not exist"));
-              callback(null);
-            });
-          } else {
-            callback(null);
-          }
-        };
-
-        checkReferences((error) => {
+        mysqlConnection.query(query, values, (error, results) => {
           if (error) {
-            return res.status(404).json({ error: error.message });
+            console.error("Error updating claim:", error);
+            return res.status(500).json({ error: "Error updating claim" });
+          }
+          if (results.affectedRows === 0) {
+            return res.status(404).json({ error: "Claim not found" });
           }
 
-          const query = `
-            UPDATE claims 
-            SET 
-              claim_date = COALESCE(?, claim_date),
-              amount_claimed = COALESCE(?, amount_claimed),
-              status = COALESCE(?, status),
-              full_name = COALESCE(?, full_name),
-              claimant_dob = COALESCE(?, claimant_dob),
-              claimant_contact_Number = COALESCE(?, claimant_contact_Number),
-              claimant_relationship = COALESCE(?, claimant_relationship),
-              event_date = COALESCE(?, event_date),
-              event_location = COALESCE(?, event_location),
-              event_description = COALESCE(?, event_description),
-              policy_type = COALESCE(?, policy_type),
-              required_document = COALESCE(?, required_document),
-              supporting_document = COALESCE(?, supporting_document),
-              policy_id = COALESCE(?, policy_id),
-              client_id = COALESCE(?, client_id),
-              beneficiary_id = COALESCE(?, beneficiary_id)
-            WHERE claim_id = ?
-          `;
-
-          const values = [
-            updates.claim_date,
-            updates.amount_claimed,
-            updates.status,
-            updates.full_name,
-            updates.claimant_dob,
-            updates.claimant_contact_Number,
-            updates.claimant_relationship,
-            updates.event_date,
-            updates.event_location,
-            updates.event_description,
-            updates.policy_type,
-            updates.required_document,
-            updates.supporting_document,
-            updates.policy_id,
-            updates.client_id,
-            updates.beneficiary_id,
-            id,
-          ];
-
-          mysqlConnection.query(query, values, (error, results) => {
-            if (error) {
-              console.error("Error updating claim:", error);
-              return res.status(500).json({ error: "Error updating claim" });
-            }
-            if (results.affectedRows === 0) {
-              return res.status(404).json({ error: "Claim not found" });
-            }
-
-            res.json({ message: "Claim updated successfully" });
-          });
+          res.json({ message: "Claim updated successfully", updatedStatus: updates.status });
         });
       },
       status: (code) => ({
