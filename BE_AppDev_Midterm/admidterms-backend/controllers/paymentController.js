@@ -17,6 +17,7 @@ exports.getAllPayments = (req, res) => {
 // Create a new payment
 exports.createPayment = (req, res) => {
     console.log("Request received:", req.body);
+    const{policy_plan_details} = req.body;
 
     const { payment_frequency, preferred_due_date, payment_method, payment_due_date, policy_id } = req.body;
 
@@ -37,7 +38,9 @@ exports.createPayment = (req, res) => {
             return res.status(404).json({ error: "Policy not found" });
         }
 
-        const { policy_type, plan_type } = results[0];
+        const policyType = policy_plan_details.policy_type;
+        const planType = policy_plan_details.plan_type;
+        // const { policy_type, plan_type } = results[0];
 
         const priceList = {
             "Retirement": { "Basic": 2000, "Standard": 3800, "Premium": 7000 },
@@ -46,7 +49,7 @@ exports.createPayment = (req, res) => {
             "Auto": { "Basic": 900, "Standard": 1500, "Premium": 2800 }
         };
 
-        let amountDue = priceList[policy_type]?.[plan_type] || 0;
+        let amountDue = priceList[policyType]?.[planType] || 0;
         if (amountDue === 0) {
             return res.status(400).json({ error: "Invalid policy type or plan type" });
         }
