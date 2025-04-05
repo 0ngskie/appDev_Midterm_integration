@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysqlConnection = require('./mysql/mysqlConnection');
 const userRoutes = require('./routes/userRoutes');
+const claimsRoutes = require("./routes/claimsRoute");
 
 const app = express();
 
@@ -20,6 +21,8 @@ mysqlConnection.connect((err) => {
 
 // Routes
 app.use('/', userRoutes);
+// Use routes
+app.use("/claims", claimsRoutes);  // <--- This ensures the route works
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

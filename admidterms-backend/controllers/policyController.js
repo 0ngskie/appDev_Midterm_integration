@@ -1,11 +1,43 @@
 const Policy = require("../models/policy");
 const mysqlConnection = require("../mysql/mysqlConnection");
 
-// Create y
+// Create policy
 module.exports.createPolicy = (req, res) => {
-    const { description, policy_type, start_date, end_date, user_id, plan_id } = req.body;
-    const query = "INSERT INTO policy (description, policy_type, start_date, end_date, user_id, plan_id) VALUES (?, ?, ?, ?, ?, ?)";
-    mysqlConnection.query(query, [description, policy_type, start_date, end_date, user_id, plan_id], (error, results) => {
+    const {
+        description,
+        policy_type,
+        start_date,
+        end_date,
+        policy_status = 'Under review',
+        supporting_document,
+        user_id,
+        plan_id,
+        submittedBy_id,
+        approvedBy_id = null, // optional at creation
+    } = req.body;
+
+    const query = `
+        INSERT INTO policy (
+            description, policy_type, start_date, end_date,
+            policy_status, supporting_document, user_id, plan_id,
+            submittedBy_id, approvedBy_id
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const values = [
+        description,
+        policy_type,
+        start_date,
+        end_date,
+        policy_status,
+        supporting_document,
+        user_id,
+        plan_id,
+        submittedBy_id,
+        approvedBy_id
+    ];
+
+    mysqlConnection.query(query, values, (error, results) => {
         if (error) {
             console.error("Error creating policy:", error);
             return res.status(500).json({ error: "Error creating policy" });
@@ -13,6 +45,7 @@ module.exports.createPolicy = (req, res) => {
         res.status(201).json({ message: "Policy created successfully", policy_id: results.insertId });
     });
 };
+
 
 // Read no
 module.exports.getAllPolicies = (req, res) => {
