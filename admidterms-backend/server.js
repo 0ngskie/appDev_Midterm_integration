@@ -3,6 +3,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysqlConnection = require('./mysql/mysqlConnection');
 const userRoutes = require('./routes/userRoutes');
+const policyRoutes = require('./routes/PolicyRoutes');
+const paymentRoute = require('./routes/paymentRoute');
+const claimsRoute = require('./routes/claimsRoute');
+const plansRoute = require('./routes/plansRoute');
 
 const app = express();
 
@@ -20,6 +24,10 @@ mysqlConnection.connect((err) => {
 
 // Routes
 app.use('/', userRoutes);
+app.use('/', policyRoutes);
+app.use('/', paymentRoute);
+app.use('/', claimsRoute);  
+app.use('/', plansRoute);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
