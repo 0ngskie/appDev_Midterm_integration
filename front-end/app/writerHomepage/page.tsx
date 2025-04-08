@@ -23,7 +23,12 @@ const Page: React.FC = () => {
           <div className="flex space-x-2">
             <button className="bg-[#FFC840] text-black py-1 px-2 rounded-lg text-[12px] font-montserrat font-bold">About Lumina</button>
             <button className="bg-[#FFC840] text-black py-1 px-2 rounded-lg text-[12px] font-montserrat font-bold">Policies</button>
-            <button className="bg-[#FFC840] text-black py-1 px-2 rounded-lg text-[12px] font-montserrat font-bold">Claim and Services</button>
+            <button
+              className="bg-[#FFC840] text-black py-1 px-2 rounded-lg text-[12px] font-montserrat font-bold"
+              onClick={() => router.push('/clientClaimsAndServices')} // Redirect to clientClaimsandServices
+            >
+              Claim and Services
+            </button>
             <button
               className="bg-[#FFC840] text-black py-1 px-2 rounded-lg text-[12px] font-montserrat font-bold"
               onClick={() => router.push('/writerReviewPolicy')} // Redirect to writerReviewPolicy

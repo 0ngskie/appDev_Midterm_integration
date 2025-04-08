@@ -311,7 +311,7 @@ const Page: React.FC = () => {
           <div className="shadow-2xl absolute left-0 w-[210px] h-[210px] bg-[#FFFFFF] border-1 border-black rounded-3xl">
             <img src="/images/lumina.png" alt="Lumina Logo" className="absolute top-1/2 left-1/2 w-[50%] h-[50%] transform -translate-x-1/2 -translate-y-1/2" />
             <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2">
-              <span className="shadow-lg px-3 py-1 rounded-2xl border-2 border-[#FFC840] text-[12px] font-montserrat font-bold">My History</span>
+              
             </div>
           </div>
 
@@ -482,7 +482,7 @@ const Page: React.FC = () => {
           <div className="space-y-3">
             <div className="flex items-center space-x-4">
               <div className="hover:bg-[#FFC840] hover:border-white w-[90px] text-[12px] font-montserrat h-[35px] flex items-center justify-center bg-[#FFFFFF] border-1 border-black text-black font-bold rounded-2xl">
-              <Link href="/writerReviewApplicationForm">
+              <Link href="/clientPolicyExample">
               <button className="text-center" style={{ cursor: "pointer" }}> 
                 View</button>
               </Link>

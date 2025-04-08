@@ -303,7 +303,7 @@ interface PolicyDetails {
         start_date: start_date.toISOString().split('T')[0],
         end_date: end_date.toISOString().split('T')[0],
         user_id: policyDetails.user_id,
-        plan_id: parseInt(plan_id, 10), // Ensure plan_id is an integer
+        plan_id: parseInt(plan_id, 10).toString(), // Ensure plan_id is a string
         created_at: new Date().toISOString(),
         policy_status: "Under review", // Match exactly with your enum options
         plan_tier: selectedPlan,

@@ -74,7 +74,6 @@ const Page: React.FC = () => {
                 <p className="text-center text-xs mt-2 font-montserrat text-black">Secure your future with retirement plans built for comfort and confidence.</p>
               </div>
             </div>
-            <button className="bg-[#FFC840] text-black py-2 px-16 rounded-lg text-[12px] font-montserrat font-bold mt-4 shadow-lg">Read More</button>
           </div>
           <div className="flex flex-col items-center">
             <div className="relative bg-[#FFC840] text-black h-80 w-64 rounded-lg text-[12px] font-montserrat font-bold shadow-lg flex items-center justify-center border border-black" style={{ backgroundImage: 'url(/images/img2.png)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}>
@@ -83,7 +82,6 @@ const Page: React.FC = () => {
                 <p className="text-center text-xs mt-2">Invest in your children's dreams with affordable education coverage options.</p>
               </div>
             </div>
-            <button className="bg-[#FFC840] text-black py-2 px-16 rounded-lg text-[12px] font-montserrat font-bold mt-4 shadow-lg">Read More</button>
           </div>
           <div className="flex flex-col items-center">
             <div className="relative bg-[#FFC840] text-black h-80 w-64 rounded-lg text-[12px] font-montserrat font-bold shadow-lg flex items-center justify-center border border-black" style={{ backgroundImage: 'url(/images/img3.png)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}>
@@ -92,7 +90,6 @@ const Page: React.FC = () => {
                 <p className="text-center text-xs mt-2">Stay covered with reliable health plans that prioritize your well-being.</p>
               </div>
             </div>
-            <button className="bg-[#FFC840] text-black py-2 px-16 rounded-lg text-[12px] font-montserrat font-bold mt-4 shadow-lg">Read More</button>
           </div>
           <div className="flex flex-col items-center">
             <div className="relative bg-[#FFC840] text-black h-80 w-64 rounded-lg text-[12px] font-montserrat font-bold shadow-lg flex items-center justify-center border border-black" style={{ backgroundImage: 'url(/images/img4.png)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}>
@@ -101,7 +98,6 @@ const Page: React.FC = () => {
                 <p className="text-center text-xs mt-2">Drive with confidence knowing your vehicle is backed by dependable coverage.</p>
               </div>
             </div>
-            <button className="bg-[#FFC840] text-black py-2 px-16 rounded-lg text-[12px] font-montserrat font-bold mt-4 shadow-lg">Read More</button>
           </div>
         </div>
       </div>
